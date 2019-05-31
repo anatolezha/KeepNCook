@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "247766819675",
+    "firebase_url": "https://keepncook-15a2d.firebaseio.com",
+    "project_id": "keepncook-15a2d",
+    "storage_bucket": "keepncook-15a2d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:247766819675:android:39f44c11b10006a4",
+        "android_client_info": {
+          "package_name": "com.example.keepncook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "247766819675-752cdlfk7c4pp8qfj7ng3cokd1gmbdq8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.keepncook",
+            "certificate_hash": "a6ca9bd1e6766577864b4546391b4196fd635acf"
+          }
+        },
+        {
+          "client_id": "247766819675-m05o0vri7qmie4cu1gj26dcft5mu5rmf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7adRtLz-BqTbnhAOAg-F57BIAbsQew8M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "247766819675-m05o0vri7qmie4cu1gj26dcft5mu5rmf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

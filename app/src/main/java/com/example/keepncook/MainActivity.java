@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -65,12 +66,15 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
 
+
     }
 
     private void updateUI(FirebaseUser user) {
         if(user == null){
             Intent intentSignIn = new Intent(this, SigninActivity.class);
             startActivity(intentSignIn);
+        } else {
+            ((TextView )findViewById(R.id.textView2)).setText("Hello "  + user.getEmail());
         }
     }
 

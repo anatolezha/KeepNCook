@@ -11,10 +11,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.keepncook.dummy.DummyContent;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ProductFragment.OnListFragmentInteractionListener {
     private FirebaseAuth mAuth;
 
 
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intentSignIn = new Intent(this, SigninActivity.class);
             startActivity(intentSignIn);
         } else {
-            ((TextView )findViewById(R.id.textView2)).setText("Hello "  + user.getEmail());
+
         }
     }
 
@@ -82,5 +83,10 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signOut();
         finish();
         startActivity(getIntent());
+    }
+
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+
     }
 }

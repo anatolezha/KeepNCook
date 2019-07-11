@@ -8,7 +8,7 @@ public class DummyContent {
      * A dummy item representing a piece of content.
      */
     public static class DummyItem {
-        public  String id;
+        public  String id_user;
         public  String name;
         public Date expiration_date;
 
@@ -16,19 +16,20 @@ public class DummyContent {
         }
 
         public String getId() {
-            return id;
+            return id_user;
         }
 
         public String getContent() {
             return name;
         }
 
+
         public Date getDetails() {
             return expiration_date;
         }
 
         public DummyItem(String id, String content, Date details) {
-            this.id = id;
+            this.id_user = id;
             this.name = content;
             this.expiration_date = details;
         }

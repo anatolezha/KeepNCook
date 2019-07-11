@@ -2,13 +2,16 @@ package com.example.keepncook;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.EventLog;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.example.keepncook.dummy.DummyContent.DummyItem;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.SuccessContinuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,13 +23,12 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-
-import javax.annotation.Nullable;
 
 public class WidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 
@@ -62,16 +64,19 @@ public class WidgetFactory implements RemoteViewsService.RemoteViewsFactory {
             System.out.println("USER ID : " + userId.toString());
 
             db = FirebaseFirestore.getInstance();
-           query = db.collection("products").whereEqualTo("id_user", userId).limit(3);
+             query = db.collection("products").whereEqualTo("id_user", userId);
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     System.out.println("OnComplete");
                     System.out.println(task.getResult().toObjects(DummyItem.class).toString());
                     list = task.getResult().toObjects(DummyItem.class);
+                    Collections.sort(list, dummyItemComparator);
+                    list = list.subList(0,3);
                     System.out.println("ListOnComplete = " + list.toString());
                 }
             });
+           query.get();
             System.out.println("List = " + list.toString());
 
 
@@ -120,8 +125,11 @@ public class WidgetFactory implements RemoteViewsService.RemoteViewsFactory {
     @Override
     public RemoteViews getViewAt(int position) {
         System.out.println("GET VIEW AT");
-        RemoteViews remoteViews =  new RemoteViews(context.getPackageName(), R.layout.fragment_product);
+        RemoteViews remoteViews =  new RemoteViews(context.getPackageName(), R.layout.widget_product);
         remoteViews.setTextViewText(R.id.item_number, list.get(position).getContent());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+        remoteViews.setTextViewText(R.id.content, simpleDateFormat.format(list.get(position).getDetails()));
         return remoteViews;
     }
 

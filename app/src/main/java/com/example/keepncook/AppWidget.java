@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ListView;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 /**
  * Implementation of App Widget functionality.
@@ -19,11 +20,21 @@ public class AppWidget extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
+        Intent intentUpdate = new Intent(context, AppWidget.class);
+        intentUpdate.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        intentUpdate.putExtra( AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[] { 0 } );
+
+        PendingIntent pendingUpdate = PendingIntent.getBroadcast(
+                context, appWidgetId, intentUpdate,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
 
 
         Intent intent = new Intent(context, WidgetService.class);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.app_widget);
+        views.setOnClickPendingIntent(R.id.btnRefresh, pendingUpdate);
+
         views.setRemoteAdapter(R.id.listView, intent);
 
         // Instruct the widget manager to update the widget
@@ -35,6 +46,8 @@ public class AppWidget extends AppWidgetProvider {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
+            Toast.makeText(context, "Widget has been updated! ", Toast.LENGTH_SHORT).show();
+
         }
     }
 
@@ -46,6 +59,12 @@ public class AppWidget extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
     }
 }
 

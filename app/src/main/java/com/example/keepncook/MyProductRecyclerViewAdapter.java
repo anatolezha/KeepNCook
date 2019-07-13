@@ -18,12 +18,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import static java.util.Collections.*;
 
 public class MyProductRecyclerViewAdapter extends RecyclerView.Adapter<MyProductRecyclerViewAdapter.ViewHolder> implements EventListener<QuerySnapshot> {
 
@@ -144,4 +141,6 @@ public class MyProductRecyclerViewAdapter extends RecyclerView.Adapter<MyProduct
             return super.toString() + " '" + mContentView.getText() + "'";
         }
     }
+
+
 }

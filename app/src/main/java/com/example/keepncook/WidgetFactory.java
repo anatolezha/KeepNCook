@@ -77,7 +77,9 @@ public class WidgetFactory implements RemoteViewsService.RemoteViewsFactory {
     private void handleResult(List<DummyItem> result) {
         list = result;
         Collections.sort(list, dummyItemComparator);
-        list = list.subList(0,3);
+        if(list.size() >=3) {
+            list = list.subList(0, 3);
+        }
         System.out.println("List = " + list.toString());
     }
 

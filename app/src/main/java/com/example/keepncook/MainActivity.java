@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.example.keepncook.dummy.DummyContent;
 import com.google.firebase.auth.FirebaseAuth;
@@ -57,6 +56,12 @@ public class MainActivity extends AppCompatActivity implements ProductFragment.O
             return true;
         }
 
+        // If clicked on scan
+        if (R.id.action_scan == id) {
+            this.lunchScanPage();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -88,5 +93,11 @@ public class MainActivity extends AppCompatActivity implements ProductFragment.O
     @Override
     public void onListFragmentInteraction(DummyContent.DummyItem item) {
 
+    }
+
+    public void lunchScanPage()
+    {
+        Intent intentScan = new Intent(this, ScanActivity.class);
+        startActivity(intentScan);
     }
 }

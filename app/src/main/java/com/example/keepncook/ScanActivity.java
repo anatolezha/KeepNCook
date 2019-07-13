@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
+import com.google.android.gms.vision.text.Text;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,9 +29,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ScanActivity extends AppCompatActivity
 {
@@ -175,6 +180,7 @@ public class ScanActivity extends AppCompatActivity
             });
 
             //Set the TextRecognizer's Processor.
+
             textRecognizer.setProcessor(new Detector.Processor<TextBlock>()
             {
                 @Override
@@ -197,8 +203,16 @@ public class ScanActivity extends AppCompatActivity
                                 StringBuilder stringBuilder = new StringBuilder();
                                 for(int i=0;i<items.size();i++){
                                     TextBlock item = items.valueAt(i);
-                                    stringBuilder.append(item.getValue());
-                                    stringBuilder.append("\n");
+                                    List<? extends Text> lines = item.getComponents();
+                                    for (Text line: lines) {
+                                        List<? extends Text> words = line.getComponents();
+                                        for (Text word: words) {
+                                            if( Pattern.matches("^([0-2][0-9]|(3)[0-1])(\\/)(((0)[0-9])|((1)[0-2]))(\\/)\\d{4}$",  word.getValue())) {
+                                                stringBuilder.append(word.getValue());
+                                                stringBuilder.append("\n");
+                                            }
+                                        }
+                                    }
                                 }
                                 mTextView.setText(stringBuilder.toString());
                             }

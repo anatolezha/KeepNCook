@@ -71,6 +71,7 @@ public class ProductFragment extends Fragment {
                     userId = user.getUid();
                 }
                 Query query = db.collection("products").whereEqualTo("id_user", userId);
+
                 adapter = new MyProductRecyclerViewAdapter(query, mListener);
                 recyclerView.setAdapter(adapter);
                 System.out.println("ID : " + userId);

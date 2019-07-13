@@ -18,6 +18,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MyProductRecyclerViewAdapter extends RecyclerView.Adapter<MyProductRecyclerViewAdapter.ViewHolder> implements EventListener<QuerySnapshot> {
@@ -27,8 +29,16 @@ public class MyProductRecyclerViewAdapter extends RecyclerView.Adapter<MyProduct
     private Query query;
     private ListenerRegistration listenerRegistration;
 
+
+    private Comparator dummyItemComparator = new Comparator<DummyItem>() {
+        @Override
+        public int compare(DummyItem param1, DummyItem param2) {
+            return param1.expiration_date.compareTo(param2.expiration_date);
+        }
+    };
+
     public MyProductRecyclerViewAdapter(Query query, OnListFragmentInteractionListener listener) {
-        mValues = new ArrayList<>();
+        mValues = new ArrayList<DummyItem>();
         mListener = listener;
         this.query = query;
     }
@@ -107,6 +117,9 @@ public class MyProductRecyclerViewAdapter extends RecyclerView.Adapter<MyProduct
                     notifyItemRemoved(dc.getOldIndex());
                     break;
             }
+            Collections.sort(mValues, dummyItemComparator);
+
+
         }
     }
 
@@ -128,4 +141,6 @@ public class MyProductRecyclerViewAdapter extends RecyclerView.Adapter<MyProduct
             return super.toString() + " '" + mContentView.getText() + "'";
         }
     }
+
+
 }

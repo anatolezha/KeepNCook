@@ -1,22 +1,31 @@
 package com.example.keepncook;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.view.View;
 
 import com.example.keepncook.dummy.DummyContent;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity implements ProductFragment.OnListFragmentInteractionListener {
     private FirebaseAuth mAuth;
+    public static final String BROADCAST = "BROADCAST";
+    private NotificationReceiver myReceiver;
 
 
     @Override
@@ -36,6 +45,13 @@ public class MainActivity extends AppCompatActivity implements ProductFragment.O
                         .setAction("Action", null).show();
             }
         });
+
+
+        //Notification setup
+        myReceiver = new NotificationReceiver();
+        registerReceiver(myReceiver, new IntentFilter("com.example.keepncook.A_CUSTOM_ACTION"));
+
+        startAlarm(true,true);
     }
 
     @Override
@@ -88,5 +104,32 @@ public class MainActivity extends AppCompatActivity implements ProductFragment.O
     @Override
     public void onListFragmentInteraction(DummyContent.DummyItem item) {
 
+    }
+    public void sendBroadcastToReceiver(View view){
+        Log.i(BROADCAST,  "Sending Broadcast");
+        //Intent intent = new Intent(this, MyReceiver.class);
+        Intent myIntent = new Intent("com.example.keepncook.A_CUSTOM_ACTION");
+        sendBroadcast(myIntent);
+
+    }
+
+    private void startAlarm(boolean isNotification, boolean isRepeat) {
+        AlarmManager manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        Intent myIntent;
+        PendingIntent pendingIntent;
+
+        Calendar calendar= Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,19);
+        calendar.set(Calendar.MINUTE,00);
+
+
+        myIntent = new Intent("com.example.keepncook.A_CUSTOM_ACTION");
+        pendingIntent = PendingIntent.getBroadcast(this,0,myIntent,0);
+
+
+        if(!isRepeat)
+            manager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime()+3000,pendingIntent);
+        else
+            manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,pendingIntent);
     }
 }

@@ -73,6 +73,12 @@ public class MainActivity extends AppCompatActivity implements ProductFragment.O
             return true;
         }
 
+        // If clicked on scan
+        if (R.id.action_scan == id) {
+            this.lunchScanPage();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -131,5 +137,11 @@ public class MainActivity extends AppCompatActivity implements ProductFragment.O
             manager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime()+3000,pendingIntent);
         else
             manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,pendingIntent);
+    }
+
+    public void lunchScanPage()
+    {
+        Intent intentScan = new Intent(this, ScanActivity.class);
+        startActivity(intentScan);
     }
 }

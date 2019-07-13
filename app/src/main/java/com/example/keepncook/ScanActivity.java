@@ -20,13 +20,17 @@ import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 public class ScanActivity extends AppCompatActivity
 {
@@ -37,6 +41,7 @@ public class ScanActivity extends AppCompatActivity
     public static final String SCAN_ACTIVITY = "SCAN_ACTIVITY";
     public static final int requestPermissionID = 101;
 
+    FirebaseFirestore db;
     String product_name;
     Date expiration_date;
 
@@ -48,6 +53,8 @@ public class ScanActivity extends AppCompatActivity
 
         mCameraView = findViewById(R.id.surfaceView);
         mTextView = findViewById(R.id.text_view);
+
+        db = FirebaseFirestore.getInstance();
 
         startCameraSource();
     }
@@ -75,20 +82,36 @@ public class ScanActivity extends AppCompatActivity
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         setProductName(String.valueOf(productNameEditText.getText()));
-                        // TODO : Implémenter l'enregistrement du produit sur Firebase, Afficher un message de succès et rediriger
+
+                        Map<String, Object> product = new HashMap<>();
+                        product.put("id_user", Objects.requireNonNull(FirebaseAuth.getInstance().getUid()));
+                        product.put("name", product_name);
+                        product.put("expiration_date", expiration_date);
+
+                        db.collection("products").add(product);
+                        displaySuccessMessage();
+                        finishActivity();
                     }
                 })
                 .setNegativeButton("Annuler", null)
                 .create();
             dialog.show();
-
-            Log.i(SCAN_ACTIVITY, "Nom du produit : " + this.product_name + ". Date d'expiration : " + this.expiration_date);
         }
         catch (ParseException e)
         {
             Log.e(SCAN_ACTIVITY, "Parsing error " + e.getMessage());
             Toast.makeText(this, "Le texte scanné n'est pas une date valide", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void displaySuccessMessage()
+    {
+        Toast.makeText(this, "Le produit a été enregistrer avec succès !", Toast.LENGTH_LONG).show();
+    }
+
+    public void finishActivity()
+    {
+        this.finish();
     }
 
     private void startCameraSource()

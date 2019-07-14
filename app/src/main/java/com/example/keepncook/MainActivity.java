@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -49,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements ProductFragment.O
         myReceiver = new NotificationReceiver();
         registerReceiver(myReceiver, new IntentFilter("com.example.keepncook.A_CUSTOM_ACTION"));
 
-        startAlarm(true,true);
+        setNotification();
     }
 
     @Override
@@ -111,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements ProductFragment.O
 
     }
 
-    private void startAlarm(boolean isNotification, boolean isRepeat) {
+    private void setNotification() {
         AlarmManager manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent myIntent;
         PendingIntent pendingIntent;
@@ -125,9 +124,8 @@ public class MainActivity extends AppCompatActivity implements ProductFragment.O
         pendingIntent = PendingIntent.getBroadcast(this,0,myIntent,0);
 
 
-        if(!isRepeat)
-            manager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime()+3000,pendingIntent);
-        else
+
+
             manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,pendingIntent);
     }
 

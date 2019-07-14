@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -41,8 +40,7 @@ public class MainActivity extends AppCompatActivity implements ProductFragment.O
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                lunchScanPage();
             }
         });
 
@@ -70,12 +68,6 @@ public class MainActivity extends AppCompatActivity implements ProductFragment.O
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
-        }
-
-        // If clicked on scan
-        if (R.id.action_scan == id) {
-            this.lunchScanPage();
             return true;
         }
 

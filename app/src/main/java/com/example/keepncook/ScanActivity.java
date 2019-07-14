@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,13 +74,19 @@ public class ScanActivity extends AppCompatActivity
     {
         try
         {
-            this.expiration_date = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).parse(this.mTextView.getText().toString());
+            String date = this.mTextView.getText().toString();
+            if(date.contains("/")){
+                this.expiration_date = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).parse(date);
+            } else if (date.contains("-")){
+                this.expiration_date = new SimpleDateFormat("dd-MM-yyyy", Locale.FRANCE).parse(date);
+            }
+            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
             final EditText productNameEditText = new EditText(this);
             AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Produit")
                 .setMessage(
-                    "Date d'expiration : " + this.expiration_date.toString() +
+                    "Date d'expiration : " + formatter.format(this.expiration_date) +
                     "\nRenseignez maintenant le nom du produit"
                 )
                 .setView(productNameEditText)
@@ -207,7 +214,7 @@ public class ScanActivity extends AppCompatActivity
                                     for (Text line: lines) {
                                         List<? extends Text> words = line.getComponents();
                                         for (Text word: words) {
-                                            if( Pattern.matches("^([0-2][0-9]|(3)[0-1])(\\/)(((0)[0-9])|((1)[0-2]))(\\/)\\d{4}$",  word.getValue())) {
+                                            if( Pattern.matches("^([0-2][0-9]|(3)[0-1])(\\/|-)(((0)[0-9])|((1)[0-2]))(\\/|-)\\d{4}$",  word.getValue())) {
                                                 stringBuilder.append(word.getValue());
                                                 stringBuilder.append("\n");
                                             }

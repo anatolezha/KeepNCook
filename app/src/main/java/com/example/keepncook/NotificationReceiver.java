@@ -97,8 +97,17 @@ public class NotificationReceiver extends BroadcastReceiver {
                 notificationManager.notify(1, notif);
 
         }
-    }
 
+
+    }
+    public static int getDaysDifference(Date fromDate,Date toDate)
+    {
+        if(fromDate != null && toDate !=null){
+            return (int)( (toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24));
+        }
+            return -4; 
+
+    }
 
     private boolean productsOutOfDate() {
         boolean notify = false;
@@ -108,9 +117,9 @@ public class NotificationReceiver extends BroadcastReceiver {
         for(int i = 0; i < list.size(); i++){
             Date productExpirationDate = list.get(i).expiration_date;
 
-            //System.out.println("CURRENT PRODUCT = " + list.get(i).name);
-            //System.out.println(productExpirationDate.compareTo(currentDate));
-           if(productExpirationDate.compareTo(currentDate) <= 0){
+            System.out.println("CURRENT PRODUCT = " + list.get(i).name);
+            System.out.println(getDaysDifference(productExpirationDate, currentDate));
+           if(getDaysDifference(productExpirationDate, currentDate) > -3){
                 notify = true;
                 return notify;
             }

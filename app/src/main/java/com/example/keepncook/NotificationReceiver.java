@@ -105,7 +105,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         if(fromDate != null && toDate !=null){
             return (int)( (toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24));
         }
-            return -4; 
+            return -4;
 
     }
 

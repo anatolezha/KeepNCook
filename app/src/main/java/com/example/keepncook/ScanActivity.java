@@ -80,6 +80,14 @@ public class ScanActivity extends AppCompatActivity
             } else if (date.contains("-")){
                 this.expiration_date = new SimpleDateFormat("dd-MM-yyyy", Locale.FRANCE).parse(date);
             }
+
+            Date curr_date = new Date();
+            if (this.expiration_date.compareTo(curr_date) <= 0)
+            {
+                Toast.makeText(this, "Votre produit a déjà expiré petit malin", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
             final EditText productNameEditText = new EditText(this);

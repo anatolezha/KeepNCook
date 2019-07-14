@@ -102,6 +102,11 @@ public class ScanActivity extends AppCompatActivity
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         setProductName(String.valueOf(productNameEditText.getText()));
+                        if ((null == product_name) || product_name.equals("") || product_name.equals(" "))
+                        {
+                            displayErrorMessage();
+                            return;
+                        }
 
                         Map<String, Object> product = new HashMap<>();
                         product.put("id_user", Objects.requireNonNull(FirebaseAuth.getInstance().getUid()));
@@ -122,6 +127,11 @@ public class ScanActivity extends AppCompatActivity
             Log.e(SCAN_ACTIVITY, "Parsing error " + e.getMessage());
             Toast.makeText(this, "Le texte scanné n'est pas une date valide", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void displayErrorMessage()
+    {
+        Toast.makeText(this, "Veuillez renseigner un nom de produit valide", Toast.LENGTH_LONG).show();
     }
 
     private void displaySuccessMessage()

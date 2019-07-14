@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity implements ProductFragment.O
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_logout) {
+            this.logout();
         }
 
         return super.onOptionsItemSelected(item);
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements ProductFragment.O
         }
     }
 
-    public void logout(View v){
+    public void logout(){
         FirebaseAuth.getInstance().signOut();
         finish();
         startActivity(getIntent());
